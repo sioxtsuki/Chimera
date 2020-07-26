@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.linecorp.bot.client.LineMessagingClient;
@@ -31,7 +30,7 @@ public class ScheduledTaskService
     /**
      * プッシュメッセージスケジュール
      */
-    @Scheduled(initialDelay=0, fixedDelay=60000)
+    //@Scheduled(initialDelay=0, fixedDelay=60000)
     public void executeAlarm()
     {
     	Resource resource = null;
