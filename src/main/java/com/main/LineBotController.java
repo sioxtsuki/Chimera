@@ -35,7 +35,7 @@ public class LineBotController {
 
 
 		String value = "<" + request.getParameter("server").toString() + ">\r\n";
-		value.concat(request.getParameter("text").toString());
+		value += request.getParameter("text").toString();
 
 		try {
 			response = this.lineMessagingClient
