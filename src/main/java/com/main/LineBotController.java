@@ -27,14 +27,20 @@ public class LineBotController {
 	@RequestMapping(value = "/linebot")
 	void index(HttpServletRequest request) throws RuntimeException {
 
+		System.out.println("request: " + request.getParameter("server").toString());
 		System.out.println("request: " + request.getParameter("text").toString());
 
 		@SuppressWarnings("unused")
 		BotApiResponse response;
+
+
+		String value = "<" + request.getParameter("server").toString() + ">\r\n";
+		value.concat(request.getParameter("text").toString());
+
 		try {
 			response = this.lineMessagingClient
 			        .pushMessage(new PushMessage("Ud6e699869888126beedab30c5b3d484e".toString(),
-			                     new TextMessage(request.getParameter("text").toString()
+			                     new TextMessage(value.toString()
 			                      ))).get();
 
 		} catch (InterruptedException | ExecutionException e) {
