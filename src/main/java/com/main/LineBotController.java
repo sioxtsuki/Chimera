@@ -40,13 +40,15 @@ public class LineBotController {
 
 		System.out.println("request: " + request.getParameter("server").toString());
 		System.out.println("request: " + request.getParameter("text").toString());
+		System.out.println("request: " + request.getParameter("message").toString());
 
 		@SuppressWarnings("unused")
 		BotApiResponse response;
 
 
 		String value = "<" + request.getParameter("server").toString() + ">\r\n";
-		value += request.getParameter("text").toString();
+		value += request.getParameter("text").toString()+ ">\r\n";
+		value += request.getParameter("message").toString()+ ">\r\n";
 
     	DBConnection conn = null;
     	PreparedStatement ps = null;
