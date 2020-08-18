@@ -47,8 +47,8 @@ public class LineBotController {
 
 
 		String value = "<" + request.getParameter("server").toString() + ">\r\n";
-		value += request.getParameter("text").toString()+ ">\r\n";
-		value += request.getParameter("message").toString()+ ">\r\n";
+		value += request.getParameter("text").toString()+ "\r\n";
+		value += request.getParameter("message").toString()+ "\r\n";
 
     	DBConnection conn = null;
     	PreparedStatement ps = null;
