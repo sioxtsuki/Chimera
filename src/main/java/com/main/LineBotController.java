@@ -1,5 +1,7 @@
 package com.main;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,25 +37,64 @@ public class LineBotController {
 	private LineMessagingClient lineMessagingClient;
 
 
+	/**
+	 * プッシュ処理
+	 * @param request
+	 * @throws RuntimeException
+	 */
 	@RequestMapping(value = "/linebot")
 	void index(HttpServletRequest request) throws RuntimeException {
-
-		System.out.println("request: " + request.getParameter("server").toString());
-		System.out.println("request: " + request.getParameter("text").toString());
-		System.out.println("request: " + request.getParameter("message").toString());
 
 		@SuppressWarnings("unused")
 		BotApiResponse response;
 
+		//+------------------------------+
+		//| 停止の場合はアラートを受け付けない
+		//+------------------------------+
+		// プロパティ情報を取得
+    	Properties conf_props = new Properties();
+    	try {
+			conf_props.load(new FileInputStream(Constants.CONF_PROP_PATH));
+		} catch (FileNotFoundException e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+		}
+    	if (conf_props.getProperty("ratechk.allow").toString().equals("0") == true) // 配信を許可しない場合は処理中断
+    	{
+    		return;
+    	}
 
-		String value = "<" + request.getParameter("server").toString() + ">\r\n";
-		value += request.getParameter("text").toString()+ "\r\n";
-		value += request.getParameter("message").toString()+ "\r\n";
+		String strServer = request.getParameter("server");
+		String strText = request.getParameter("text");
+		String strMessage = request.getParameter("message");
+
+
+		System.out.println("request: " + strServer);
+		System.out.println("request: " + strText);
+		System.out.println("request: " + strMessage);
+
+
+		String value = "";
+		if (strServer != null)
+			if (strServer.isEmpty() == false)
+				value = "<" + strServer.toString() + ">\r\n";
+		if (strText != null)
+			if (strText.isEmpty() == false)
+				value += strText.toString()+ "\r\n";
+		if (strMessage != null)
+			if (strMessage.isEmpty() == false)
+				value += strMessage.toString()+ "\r\n";
+
+		// メッセージが無い場合は終了
+		if (value.isEmpty() == true) return;
 
     	DBConnection conn = null;
     	PreparedStatement ps = null;
     	ResultSet rs = null;
-    	String text = "";
+    	//String text = "";
     	StringBuilder sbFindSQL = null;
     	Resource resource = null;
     	Properties props = null;
