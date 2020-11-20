@@ -67,7 +67,97 @@ public class Utility
 	}
 
 	/**
-	 * レートチェック状態確認
+	 * レート配信Switch  DB版
+	 * @param value (0 ; 停止、1: 開始)
+	 * @return
+	 */
+	public static String RateCheckProcessEx(int value)
+	{
+		String strProcessText = (value == 0 ? "stop" : "start");
+		String resultValue = "system error";
+	   	PreparedStatement ps = null;
+    	ResultSet rs = null;
+
+    	Resource resource = new ClassPathResource(Constants.PROP_PATH);
+    	Properties props = null;
+    	DBConnection conn = null;
+
+    	try {
+    		// 定義情報を取得
+			props = PropertiesLoaderUtils.loadProperties(resource);
+			// コネクション生成
+			conn = DBFactory.getConnection(props);
+
+			if (conn != null)
+			{
+				String bot_id = props.getProperty("id"); // BOT ID
+		    	String tb_main = props.getProperty("tb.main"); // テーブル名
+
+		    	// SQL 作成
+		    	StringBuilder sbUpdSQL = new StringBuilder();
+		    	sbUpdSQL.append("UPDATE ");
+		    	sbUpdSQL.append(tb_main.toString());
+		    	sbUpdSQL.append(" SET permissions=");
+		    	sbUpdSQL.append(String.valueOf(value).toString());
+		    	sbUpdSQL.append(" WHERE id=?");
+
+				ps = conn.getPreparedStatement(sbUpdSQL.toString(), null);
+
+				if (ps != null)
+				{
+					ps.clearParameters();
+					ps.setString(1, bot_id.toString());
+
+					int ret = ps.executeUpdate();
+
+					System.out.println(String.valueOf(ret).toString());
+					System.out.println(sbUpdSQL.toString());
+
+					if (ret == 1)
+						resultValue = "rate checker " + strProcessText.toString() + " successful.";
+
+					ps.close();
+				}
+			}
+
+		} catch (IOException e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} finally {
+			if (conn != null)
+			{
+				try {
+					conn.getConnection().close();
+				} catch (SQLException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+				conn = null;
+			}
+			if (rs != null)
+	    	{
+	    		rs = null;
+	    	}
+	    	if (ps != null)
+	    	{
+	    		ps = null;
+	    	}
+		}
+
+		return resultValue.toString();
+	}
+
+	/**
+	 * レートチェック状態確認 結果文言
 	 * @return
 	 */
 	public static String RateCheckStateProcess()
@@ -90,6 +180,114 @@ public class Utility
 		}
 
 		return "in operation.";
+	}
+
+
+	public static int GetRateCheckState()
+	{
+		PreparedStatement ps = null;
+    	ResultSet rs = null;
+
+    	Resource resource = new ClassPathResource(Constants.PROP_PATH);
+    	Properties props = null;
+    	DBConnection conn = null;
+		int ret = 0;
+
+    	try {
+    		// 定義情報を取得
+			props = PropertiesLoaderUtils.loadProperties(resource);
+			// コネクション生成
+			conn = DBFactory.getConnection(props);
+
+			if (conn != null)
+			{
+				String bot_id = props.getProperty("id"); // BOT ID
+		    	String tb_main = props.getProperty("tb.main"); // テーブル名
+
+		    	// SQL 作成
+		    	StringBuilder sbUpdSQL = new StringBuilder();
+		    	sbUpdSQL.append("SELECT * FROM ");
+		    	sbUpdSQL.append(tb_main.toString());
+		    	sbUpdSQL.append(" WHERE id=?");
+
+				ps = conn.getPreparedStatement(sbUpdSQL.toString(), null);
+
+				if (ps != null)
+				{
+					ps.clearParameters();
+					ps.setString(1, bot_id.toString());
+
+					rs = ps.executeQuery(); // クエリ実行
+					if (rs != null)
+					{
+						rs.last();
+						int number_of_row = rs.getRow();
+						rs.beforeFirst();   //最初に戻る
+
+						if ((number_of_row > 0) == true) // レコードが存在する場合
+						{
+							StringBuilder sbData = new StringBuilder();
+
+							while (rs.next())
+							{
+								ret = (rs.getInt("permissions"));
+								break;
+							}
+
+							rs.close();
+						}
+					}
+					ps.close();
+				}
+			}
+
+		} catch (IOException e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} finally {
+			if (conn != null)
+			{
+				try {
+					conn.getConnection().close();
+				} catch (SQLException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+				conn = null;
+			}
+			if (rs != null)
+	    	{
+	    		rs = null;
+	    	}
+	    	if (ps != null)
+	    	{
+	    		ps = null;
+	    	}
+		}
+
+    	return ret;
+	}
+
+	/**
+	 * レートチェック状態確認 DB版
+	 * @return
+	 */
+	public static String RateCheckStateProcessEx()
+	{
+		if (GetRateCheckState() == 0)
+			return "stopped state."; // 返却変数にセット
+		else
+			return "in operation."; // 返却変数にセット
+
 	}
 
 	/**
@@ -636,37 +834,12 @@ public class Utility
 				ps.setString(1, process_id.toString());
 				ps.setString(2, server_id.toString());
 
-				rs = ps.executeQuery(); // クエリ実行
-				if (rs != null)
+				int ret = ps.executeUpdate();
+				if (ret != 0) // 処理成功の場合
 				{
-					rs.last();
-					int number_of_row = rs.getRow();
-					rs.beforeFirst();   //最初に戻る
 
-					if ((number_of_row > 0) == true) // レコードが存在する場合
-					{
-						StringBuilder sbData = new StringBuilder();
-
-						while (rs.next())
-						{
-							for (String column : columns) // 指定カラム数分ループ
-							{
-								sbData.append(rs.getString(column.trim().toString()));
-								if (columns.length > 2)
-								{
-									sbData.append("\n");
-								}
-							}
-						}
-
-						rs.close();
-
-						res = sbData.toString(); // 返却変数にセット
-
-						sbData.delete(0, sbData.length());
-						sbData = null;
-					}
 				}
+
 				ps.close();
 			}
     	}

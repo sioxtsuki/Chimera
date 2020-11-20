@@ -228,10 +228,7 @@ public class ProcessReplyMessage
 	    	StringBuilder sbDelSQL = new StringBuilder();
 	    	sbDelSQL.append("DELETE FROM ");
 	    	sbDelSQL.append(tb_user.toString());
-	    	sbDelSQL.append(" WHERE user_id=? AND bot_id=?");
-	    	//sbDelSQL.append("user_id='" + user_id.toString() + "'");
-	    	//sbDelSQL.append(" AND ");
-	    	//sbDelSQL.append("bot_id='" + bot_id.toString() + "'");
+	    	sbDelSQL.append(" WHERE user_id=?");
 
 			if (conn != null)
 			{
@@ -240,8 +237,7 @@ public class ProcessReplyMessage
 				if (ps != null)
 				{
 					ps.clearParameters();
-					ps.setString(1, user_id.toString());
-					ps.setString(2, bot_id.toString());
+					ps.setString(1, bot_id.toString());
 					int ret = ps.executeUpdate();
 					if (ret == 1)
 					{

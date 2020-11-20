@@ -1,7 +1,5 @@
 package com.main;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +23,7 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.utility.Constants;
 import com.utility.DBConnection;
+import com.utility.Utility;
 
 /**
  * @author shiotsuki
@@ -51,6 +50,13 @@ public class LineBotController {
 		//+------------------------------+
 		//| 停止の場合はアラートを受け付けない
 		//+------------------------------+
+		int ret = Utility.GetRateCheckState();
+		if (ret == 0) // 配信を許可しない場合は処理中断
+		{
+			return;
+		}
+
+		/*
 		// プロパティ情報を取得
     	Properties conf_props = new Properties();
     	try {
@@ -66,6 +72,7 @@ public class LineBotController {
     	{
     		return;
     	}
+		*/
 
 		String strServer = request.getParameter("server");
 		String strText = request.getParameter("text");

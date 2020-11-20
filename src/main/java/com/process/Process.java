@@ -161,16 +161,19 @@ public class Process
 				*/
 				if (Utility.CompareString(tmpText, "stop") == true) // レートチェック停止
 				{
-					res = Utility.RateCheckProcess(0);
+					res = Utility.RateCheckProcessEx(0);
+					//res = Utility.RateCheckProcess(0);
 				}
 				else if (Utility.CompareString(tmpText, "start") == true) // レートチェック開始
 				{
-					res = Utility.RateCheckProcess(1);
+					res = Utility.RateCheckProcessEx(1);
+					//res = Utility.RateCheckProcess(1);
 				}
 				else if (Utility.CompareString(tmpText, "state") == true) // レートチェック稼働状況確認
 				{
 					// レートチェック状態確認
-					res = Utility.RateCheckStateProcess();
+					res = Utility.RateCheckStateProcessEx();
+					//res = Utility.RateCheckStateProcess();
 				}
 				/*
 				else if (Utility.CompareString(tmpText, "check") == true) // レート配信確認
