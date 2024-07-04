@@ -220,14 +220,29 @@ public class Utility
 					rs = ps.executeQuery(); // クエリ実行
 					if (rs != null)
 					{
-						rs.last();
+						//StringBuilder sbData = new StringBuilder();
+						//リストにデータを追加する
+						while (rs.next())
+						{
+							//sbData.append(rs.getString("permissions"));
+							ret = (rs.getInt("permissions"));
+							break;
+						}
+						/*
+						//リストがからの場合、nullを返却する
+						if(sbData.length() > 0)
+						{
+							System.out.println(sbData.toString());
+						}*/
+
+						/*
+						rs.afterLast();
+						//rs.last();
 						int number_of_row = rs.getRow();
 						rs.beforeFirst();   //最初に戻る
 
 						if ((number_of_row > 0) == true) // レコードが存在する場合
 						{
-							StringBuilder sbData = new StringBuilder();
-
 							while (rs.next())
 							{
 								ret = (rs.getInt("permissions"));
@@ -235,7 +250,8 @@ public class Utility
 							}
 
 							rs.close();
-						}
+						}*/
+						rs.close();
 					}
 					ps.close();
 				}
@@ -283,10 +299,10 @@ public class Utility
 	 */
 	public static String RateCheckStateProcessEx()
 	{
-		if (GetRateCheckState() == 0)
-			return "stopped state."; // 返却変数にセット
-		else
+		if (GetRateCheckState() == 1)
 			return "in operation."; // 返却変数にセット
+		else
+			return "stopped state."; // 返却変数にセット
 
 	}
 

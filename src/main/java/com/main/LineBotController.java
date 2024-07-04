@@ -50,6 +50,7 @@ public class LineBotController {
 		//+------------------------------+
 		//| 停止の場合はアラートを受け付けない
 		//+------------------------------+
+		// DBを検索
 		int ret = Utility.GetRateCheckState();
 		if (ret == 0) // 配信を許可しない場合は処理中断
 		{
@@ -57,7 +58,8 @@ public class LineBotController {
 		}
 
 		/*
-		// プロパティ情報を取得
+		 *
+		// プロパティ情報を取得　
     	Properties conf_props = new Properties();
     	try {
 			conf_props.load(new FileInputStream(Constants.CONF_PROP_PATH));
@@ -78,11 +80,9 @@ public class LineBotController {
 		String strText = request.getParameter("text");
 		String strMessage = request.getParameter("message");
 
-
 		System.out.println("request: " + strServer);
 		System.out.println("request: " + strText);
 		System.out.println("request: " + strMessage);
-
 
 		String value = "";
 		if (strServer != null)
