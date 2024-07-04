@@ -48,7 +48,7 @@ public class LineBotController {
 		BotApiResponse response;
 
 		//+------------------------------+
-		//| 停止の場合はアラートを受け付けない　
+		//| 停止の場合はアラートを受け付けない
 		//+------------------------------+
 		// DBを検索　　
 		int ret = Utility.GetRateCheckState();
