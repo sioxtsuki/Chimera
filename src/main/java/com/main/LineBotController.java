@@ -58,7 +58,6 @@ public class LineBotController {
 		}
 
 		/*
-		 *
 		// プロパティ情報を取得　
     	Properties conf_props = new Properties();
     	try {
