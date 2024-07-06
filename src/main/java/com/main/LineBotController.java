@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -106,10 +107,11 @@ public class LineBotController {
 
 		try
 		{
-			String user_id = rs.getString("user_id").toString();
+        	props = PropertiesLoaderUtils.loadProperties(resource);
+			String bot_id = props.getProperty("id").toString();
 
 			response = this.lineMessagingClient
-			        .pushMessage(new PushMessage(user_id.toString(),
+			        .pushMessage(new PushMessage(bot_id.toString(),
 			                     new TextMessage(value.toString()
 			                      ))).get();
 
