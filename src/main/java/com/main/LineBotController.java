@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -18,7 +17,6 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.factory.DBFactory;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.TextMessage;
@@ -111,7 +109,17 @@ public class LineBotController {
 		{
 			resource = new ClassPathResource(Constants.PROP_PATH);
         	props = PropertiesLoaderUtils.loadProperties(resource);
-			conn = DBFactory.getConnection(props);
+
+
+        	String user_id = props.getProperty("groupid").toString();
+			response = this.lineMessagingClient
+			        .pushMessage(new PushMessage(user_id.toString(),
+			                     new TextMessage(value.toString()
+			                      ))).get();
+
+
+/*
+        	conn = DBFactory.getConnection(props);
 
 			if (value.isEmpty() == false)
 			{
@@ -147,21 +155,22 @@ public class LineBotController {
 					}
 				}
 			}
+			*/
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-		} catch (InstantiationException e) {
+		//} catch (InstantiationException e) {
 			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+			//e.printStackTrace();
+		//} catch (IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (SQLException e) {
+			//e.printStackTrace();
+		//} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 }
