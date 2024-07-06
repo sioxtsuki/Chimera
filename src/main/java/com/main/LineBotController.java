@@ -1,5 +1,7 @@
 package com.main;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,13 +12,10 @@ import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.factory.DBFactory;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.TextMessage;
@@ -57,7 +56,7 @@ public class LineBotController {
 			return;
 		}
 
-		/*
+
 		// プロパティ情報を取得　
     	Properties conf_props = new Properties();
     	try {
@@ -73,7 +72,7 @@ public class LineBotController {
     	{
     		return;
     	}
-		*/
+
 
 		String strServer = request.getParameter("server");
 		String strText = request.getParameter("text");
@@ -107,10 +106,18 @@ public class LineBotController {
 
 		try
 		{
-        	resource = new ClassPathResource(Constants.PROP_PATH);
+			String user_id = rs.getString("user_id").toString();
+
+			response = this.lineMessagingClient
+			        .pushMessage(new PushMessage(user_id.toString(),
+			                     new TextMessage(value.toString()
+			                      ))).get();
+
+
+			/*
+			resource = new ClassPathResource(Constants.PROP_PATH);
         	props = PropertiesLoaderUtils.loadProperties(resource);
 			conn = DBFactory.getConnection(props);
-
 
 			if (value.isEmpty() == false)
 			{
@@ -145,7 +152,7 @@ public class LineBotController {
 						}
 					}
 				}
-			}
+			}*/
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
