@@ -3,23 +3,28 @@ package com.main;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.factory.DBFactory;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.utility.Constants;
-import com.utility.Utility;
+import com.utility.DBConnection;
 
 /**
  * @author shiotsuki
@@ -47,11 +52,12 @@ public class LineBotController {
 		//| 停止の場合はアラートを受け付けない
 		//+------------------------------+
 		// DBを検索ok1
+		/*
 		int ret = Utility.GetRateCheckState();
 		if (ret == 0) // 配信を許可しない場合は処理中断
 		{
 			return;
-		}
+		}*/
 
 
 		// プロパティ情報を取得　
@@ -93,26 +99,16 @@ public class LineBotController {
 		// メッセージが無い場合は終了
 		if (value.isEmpty() == true) return;
 
-    	//DBConnection conn = null;
-    	//PreparedStatement ps = null;
-    	//ResultSet rs = null;
+    	DBConnection conn = null;
+    	PreparedStatement ps = null;
+    	ResultSet rs = null;
     	//String text = "";
-    	//StringBuilder sbFindSQL = null;
+    	StringBuilder sbFindSQL = null;
     	Resource resource = null;
     	Properties props = null;
 
 		try
 		{
-        	props = PropertiesLoaderUtils.loadProperties(resource);
-			String bot_id = props.getProperty("id").toString();
-
-			response = this.lineMessagingClient
-			        .pushMessage(new PushMessage(bot_id.toString(),
-			                     new TextMessage(value.toString()
-			                      ))).get();
-
-
-			/*
 			resource = new ClassPathResource(Constants.PROP_PATH);
         	props = PropertiesLoaderUtils.loadProperties(resource);
 			conn = DBFactory.getConnection(props);
@@ -150,22 +146,22 @@ public class LineBotController {
 						}
 					}
 				}
-			}*/
+			}
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-		//} catch (InstantiationException e) {
+		} catch (InstantiationException e) {
 			// TODO 自動生成された catch ブロック
-			//e.printStackTrace();
-		//} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
-			//e.printStackTrace();
-		//} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }
