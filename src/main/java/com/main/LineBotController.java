@@ -3,9 +3,6 @@ package com.main;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -22,7 +19,6 @@ import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.utility.Constants;
-import com.utility.DBConnection;
 import com.utility.Utility;
 
 /**
@@ -97,11 +93,11 @@ public class LineBotController {
 		// メッセージが無い場合は終了
 		if (value.isEmpty() == true) return;
 
-    	DBConnection conn = null;
-    	PreparedStatement ps = null;
-    	ResultSet rs = null;
+    	//DBConnection conn = null;
+    	//PreparedStatement ps = null;
+    	//ResultSet rs = null;
     	//String text = "";
-    	StringBuilder sbFindSQL = null;
+    	//StringBuilder sbFindSQL = null;
     	Resource resource = null;
     	Properties props = null;
 
@@ -161,15 +157,15 @@ public class LineBotController {
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-		} catch (InstantiationException e) {
+		//} catch (InstantiationException e) {
 			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+			//e.printStackTrace();
+		//} catch (IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (SQLException e) {
+			//e.printStackTrace();
+		//} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 }
