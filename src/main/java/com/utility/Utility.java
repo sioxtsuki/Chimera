@@ -208,14 +208,14 @@ public class Utility
 		    	StringBuilder sbUpdSQL = new StringBuilder();
 		    	sbUpdSQL.append("SELECT * FROM ");
 		    	sbUpdSQL.append(tb_main.toString());
-		    	sbUpdSQL.append(" WHERE id=?");
+		    	//sbUpdSQL.append(" WHERE id=?");
 
 				ps = conn.getPreparedStatement(sbUpdSQL.toString(), null);
 
 				if (ps != null)
 				{
 					ps.clearParameters();
-					ps.setString(1, bot_id.toString());
+					//ps.setString(1, bot_id.toString());
 
 					rs = ps.executeQuery(); // クエリ実行
 					if (rs != null)
@@ -286,14 +286,18 @@ public class Utility
 	public static String RateCheckStateProcessEx()
 	{
 		int state = GetRateCheckState();
+		Integer i = Integer.valueOf(state);
+		String str = i.toString();
 		if (state == 1)
 			return "in operation."; // 返却変数にセット
 		else if (state == -1)
 			return "error state."; // 返却変数にセット
 		else if (state == -2)
 			return "error state."; // 返却変数にセット
-		else
+		else if (state == 0)
 			return "stopped state."; // 返却変数にセット
+		else
+			return str;//"error state."; // 返却変数にセット
 
 	}
 
