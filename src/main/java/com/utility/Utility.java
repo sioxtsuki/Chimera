@@ -284,10 +284,107 @@ public class Utility
     	return ret;
 	}
 
+
+	public static String GetRateCheckStateEx()
+	{
+		PreparedStatement ps = null;
+    	ResultSet rs = null;
+
+    	Resource resource = new ClassPathResource(Constants.PROP_PATH);
+    	Properties props = null;
+    	DBConnection conn = null;
+		String ret = "";
+
+    	try {
+    		// 定義情報を取得
+			props = PropertiesLoaderUtils.loadProperties(resource);
+			// コネクション生成
+			conn = DBFactory.getConnection(props);
+
+			if (conn != null)
+			{
+				String bot_id = props.getProperty("id"); // BOT ID
+		    	String tb_main = props.getProperty("tb.main"); // テーブル名
+
+		    	// SQL 作成
+		    	StringBuilder sbUpdSQL = new StringBuilder();
+		    	sbUpdSQL.append("SELECT * FROM ");
+		    	sbUpdSQL.append(tb_main.toString());
+		    	//sbUpdSQL.append(" WHERE id=?");
+
+				ps = conn.getPreparedStatement(sbUpdSQL.toString(), null);
+
+				if (ps != null)
+				{
+					ps.clearParameters();
+					//ps.setString(1, bot_id.toString());
+
+					rs = ps.executeQuery(); // クエリ実行
+					if (rs != null)
+					{
+						//リストにデータを追加する
+						while (rs.next())
+						{
+							//sbData.append(rs.getString("permissions"));
+							//ret = (rs.getInt("permissions"));
+							break;
+						}
+						rs.close();
+					}
+					ps.close();
+				}
+			}
+		} catch (IOException e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+			ret = e1.getMessage();
+		} catch (SQLException e1) {
+			// TODO 自動生成された catch ブロック
+			e1.printStackTrace();
+			ret = e1.getMessage();
+		} catch (InstantiationException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			ret = e.getMessage();
+		} catch (IllegalAccessException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			ret = e.getMessage();
+		} finally {
+			if (conn != null)
+			{
+				try {
+					conn.getConnection().close();
+				} catch (SQLException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+				conn = null;
+			}
+			if (rs != null)
+	    	{
+	    		rs = null;
+	    	}
+	    	if (ps != null)
+	    	{
+	    		ps = null;
+	    	}
+		}
+
+    	return ret;
+	}
+
 	/**
 	 * レートチェック状態確認 DB版
 	 * @return
 	 */
+	public static String RateCheckStateProcessEx()
+	{
+		String str = GetRateCheckStateEx().toString();
+		return str;//"error state."; // 返却変数にセット
+
+	}
+	/*
 	public static String RateCheckStateProcessEx()
 	{
 		int state = GetRateCheckState();
@@ -304,7 +401,7 @@ public class Utility
 		else
 			return str;//"error state."; // 返却変数にセット
 
-	}
+	}*/
 
 	/**
 	 * シンボル名存在チェック
