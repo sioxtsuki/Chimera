@@ -49,7 +49,7 @@ public class LineBotController {
 		//+------------------------------+
 		//| 停止の場合はアラートを受け付けない
 		//+------------------------------+
-		// DBを検索ok1
+		// DBを検索ok1234
 		/*
 		int ret = Utility.GetRateCheckState();
 		if (ret == 0) // 配信を許可しない場合は処理中断
