@@ -43,7 +43,7 @@ public class DBFactory {
 			// スキーマ名
 			url = url.concat(configuration.getProperty(Constants.SCHEMA_KEY));
 
-			String PROPATIES = "?charset=utf8&sslmode=prefer";
+			String PROPATIES = "?sslmode=false";
 			url += PROPATIES;
 
 			// ユーザID
