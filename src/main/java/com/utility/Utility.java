@@ -285,7 +285,7 @@ public class Utility
 	}
 
 
-	public static String GetRateCheckStateEx()
+	public static String GetRateCheckStateEx(int value)
 	{
 		PreparedStatement ps = null;
     	ResultSet rs = null;
@@ -301,6 +301,8 @@ public class Utility
 			// コネクション生成
 			conn = DBFactory.getConnection(props);
 
+			value = 1;
+
 			if (conn != null)
 			{
 				String bot_id = props.getProperty("id"); // BOT ID
@@ -310,16 +312,21 @@ public class Utility
 		    	StringBuilder sbUpdSQL = new StringBuilder();
 		    	sbUpdSQL.append("SELECT * FROM ");
 		    	sbUpdSQL.append(tb_main.toString());
-		    	//sbUpdSQL.append(" WHERE id=?");
+		    	sbUpdSQL.append(" WHERE id=?");
 
 				ps = conn.getPreparedStatement(sbUpdSQL.toString(), null);
+
+				value = 2;
 
 				if (ps != null)
 				{
 					ps.clearParameters();
-					//ps.setString(1, bot_id.toString());
+					ps.setString(1, bot_id.toString());
 
 					rs = ps.executeQuery(); // クエリ実行
+
+					value = 3;
+
 					if (rs != null)
 					{
 						//リストにデータを追加する
@@ -380,8 +387,10 @@ public class Utility
 	 */
 	public static String RateCheckStateProcessEx()
 	{
-		String str = GetRateCheckStateEx().toString();
-		return str;//"error state."; // 返却変数にセット
+		int value = 0;
+		String str = GetRateCheckStateEx(value).toString();
+		Integer i = Integer.valueOf(value);
+		return str +  ":" + i.toString();
 
 	}
 	/*
