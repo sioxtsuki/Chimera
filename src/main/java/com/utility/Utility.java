@@ -298,10 +298,13 @@ public class Utility
     	try {
     		// 定義情報を取得
 			props = PropertiesLoaderUtils.loadProperties(resource);
+
+			value = 1;
+
 			// コネクション生成
 			conn = DBFactory.getConnection(props);
 
-			value = 1;
+			value = 2;
 
 			if (conn != null)
 			{
@@ -316,7 +319,7 @@ public class Utility
 
 				ps = conn.getPreparedStatement(sbUpdSQL.toString(), null);
 
-				value = 2;
+				value = 3;
 
 				if (ps != null)
 				{
@@ -325,7 +328,7 @@ public class Utility
 
 					rs = ps.executeQuery(); // クエリ実行
 
-					value = 3;
+					value = 4;
 
 					if (rs != null)
 					{
