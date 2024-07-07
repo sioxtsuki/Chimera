@@ -251,6 +251,7 @@ public class Utility
 
 							rs.close();
 						}*/
+						ret = rs.getRow();
 						rs.close();
 					}
 					else
