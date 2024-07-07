@@ -256,6 +256,10 @@ public class Utility
 					ps.close();
 				}
 			}
+			else
+			{
+				ret = -1;
+			}
 
 		} catch (IOException e1) {
 			// TODO 自動生成された catch ブロック
@@ -299,8 +303,11 @@ public class Utility
 	 */
 	public static String RateCheckStateProcessEx()
 	{
-		if (GetRateCheckState() == 1)
+		int state = GetRateCheckState();
+		if (state == 1)
 			return "in operation."; // 返却変数にセット
+		else if (state == -1)
+			return "error state."; // 返却変数にセット
 		else
 			return "stopped state."; // 返却変数にセット
 
