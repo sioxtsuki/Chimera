@@ -253,6 +253,10 @@ public class Utility
 						}*/
 						rs.close();
 					}
+					else
+					{
+						ret = -2;
+					}
 					ps.close();
 				}
 			}
@@ -307,6 +311,8 @@ public class Utility
 		if (state == 1)
 			return "in operation."; // 返却変数にセット
 		else if (state == -1)
+			return "error state."; // 返却変数にセット
+		else if (state == -2)
 			return "error state."; // 返却変数にセット
 		else
 			return "stopped state."; // 返却変数にセット
