@@ -220,38 +220,15 @@ public class Utility
 					rs = ps.executeQuery(); // クエリ実行
 					if (rs != null)
 					{
-						//StringBuilder sbData = new StringBuilder();
+						ret = rs.getRow();
 						//リストにデータを追加する
+						/*
 						while (rs.next())
 						{
 							//sbData.append(rs.getString("permissions"));
 							ret = (rs.getInt("permissions"));
 							break;
-						}
-						/*
-						//リストがからの場合、nullを返却する
-						if(sbData.length() > 0)
-						{
-							System.out.println(sbData.toString());
 						}*/
-
-						/*
-						rs.afterLast();
-						//rs.last();
-						int number_of_row = rs.getRow();
-						rs.beforeFirst();   //最初に戻る
-
-						if ((number_of_row > 0) == true) // レコードが存在する場合
-						{
-							while (rs.next())
-							{
-								ret = (rs.getInt("permissions"));
-								break;
-							}
-
-							rs.close();
-						}*/
-						ret = rs.getRow();
 						rs.close();
 					}
 					else
