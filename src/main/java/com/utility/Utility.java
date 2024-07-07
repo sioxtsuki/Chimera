@@ -285,7 +285,7 @@ public class Utility
 	}
 
 
-	public static String GetRateCheckStateEx(int value)
+	public static String GetRateCheckStateEx()
 	{
 		PreparedStatement ps = null;
     	ResultSet rs = null;
@@ -294,17 +294,18 @@ public class Utility
     	Properties props = null;
     	DBConnection conn = null;
 		String ret = "";
+		String value = "0";
 
     	try {
     		// 定義情報を取得
 			props = PropertiesLoaderUtils.loadProperties(resource);
 
-			value = 1;
+			value = "1";
 
 			// コネクション生成
 			conn = DBFactory.getConnection(props);
 
-			value = 2;
+			value = "2";
 
 			if (conn != null)
 			{
@@ -319,7 +320,7 @@ public class Utility
 
 				ps = conn.getPreparedStatement(sbUpdSQL.toString(), null);
 
-				value = 3;
+				value = "3";
 
 				if (ps != null)
 				{
@@ -328,7 +329,7 @@ public class Utility
 
 					rs = ps.executeQuery(); // クエリ実行
 
-					value = 4;
+					value = "4";
 
 					if (rs != null)
 					{
@@ -347,19 +348,19 @@ public class Utility
 		} catch (IOException e1) {
 			// TODO 自動生成された catch ブロック
 			e1.printStackTrace();
-			ret = "IOException";
+			ret = "IOException" + ":" + value;
 		} catch (SQLException e1) {
 			// TODO 自動生成された catch ブロック
 			e1.printStackTrace();
-			ret = "SQLException";
+			ret = "SQLException" + ":" + value;
 		} catch (InstantiationException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-			ret = "InstantiationException";
+			ret = "InstantiationException" + ":" + value;
 		} catch (IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-			ret = "IllegalAccessException";
+			ret = "IllegalAccessException" + ":" + value;
 		} finally {
 			if (conn != null)
 			{
@@ -390,10 +391,8 @@ public class Utility
 	 */
 	public static String RateCheckStateProcessEx()
 	{
-		int value = 0;
-		String str = GetRateCheckStateEx(value).toString();
-		Integer i = Integer.valueOf(value);
-		return str +  ":" + i.toString();
+		String str = GetRateCheckStateEx().toString();
+		return str;
 
 	}
 	/*
