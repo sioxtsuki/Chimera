@@ -221,6 +221,7 @@ public class Utility
 					if (rs != null)
 					{
 						ret = rs.getRow();
+
 						//リストにデータを追加する
 						/*
 						while (rs.next())
@@ -246,15 +247,19 @@ public class Utility
 		} catch (IOException e1) {
 			// TODO 自動生成された catch ブロック
 			e1.printStackTrace();
+			ret = -999;
 		} catch (SQLException e1) {
 			// TODO 自動生成された catch ブロック
 			e1.printStackTrace();
+			ret = -999;
 		} catch (InstantiationException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+			ret = -999;
 		} catch (IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+			ret = -999;
 		} finally {
 			if (conn != null)
 			{
