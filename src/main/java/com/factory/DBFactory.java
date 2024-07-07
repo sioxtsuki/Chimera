@@ -58,6 +58,7 @@ public class DBFactory {
         	System.out.println(pw);
 */
 
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection connection = DriverManager.getConnection(url, id, pw);
 
 			// ----------------------------------
@@ -70,6 +71,10 @@ public class DBFactory {
 		catch (SQLException e)
 		{
 	        System.out.println("MySQLに接続できませんでした。");
+	        throw new InstantiationException();
+		} catch (ClassNotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
 	        throw new InstantiationException();
 		}
 		return dbConnection;
