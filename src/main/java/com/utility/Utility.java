@@ -337,19 +337,19 @@ public class Utility
 		} catch (IOException e1) {
 			// TODO 自動生成された catch ブロック
 			e1.printStackTrace();
-			ret = e1.getMessage();
+			ret = "IOException";
 		} catch (SQLException e1) {
 			// TODO 自動生成された catch ブロック
 			e1.printStackTrace();
-			ret = e1.getMessage();
+			ret = "SQLException";
 		} catch (InstantiationException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-			ret = e.getMessage();
+			ret = "InstantiationException";
 		} catch (IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-			ret = e.getMessage();
+			ret = "IllegalAccessException";
 		} finally {
 			if (conn != null)
 			{
