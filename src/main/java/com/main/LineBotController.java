@@ -118,6 +118,7 @@ public class LineBotController {
 			/* Delete By 2024.07.08 Start
         	conn = DBFactory.getConnection(props);
 
+
 			if (value.isEmpty() == false)
 			{
 				String bot_id = props.getProperty("id").toString();
