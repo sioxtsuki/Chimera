@@ -4,15 +4,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 import com.entity.RateBeans;
-import com.factory.DBFactory;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.TextMessage;
@@ -20,8 +17,6 @@ import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.network.TcpClient;
 import com.utility.Constants;
-import com.utility.DBConnection;
-import com.utility.Utility;
 
 @LineMessageHandler
 public class ProcessPushMessage
@@ -61,15 +56,15 @@ public class ProcessPushMessage
 	@SuppressWarnings("unused")
 	private void Process(String port, String name)throws URISyntaxException, SQLException, InterruptedException, ExecutionException, InstantiationException, IllegalAccessException
 	{
-    	DBConnection conn = null;
-    	PreparedStatement ps = null;
-    	ResultSet rs = null;
+    	//DBConnection conn = null;
+    	//PreparedStatement ps = null;
+    	//ResultSet rs = null;
     	String text = "";
-    	StringBuilder sbFindSQL = null;
+    	//StringBuilder sbFindSQL = null;
 
 		try
 		{
-			conn = DBFactory.getConnection(this.props);
+			//conn = DBFactory.getConnection(this.props);
 
 			// MT4からレート情報を取得
 			TcpClient client = new TcpClient();
@@ -152,7 +147,6 @@ public class ProcessPushMessage
 			default:
 				text = ""; // TODO
 				break;
-
 			}
 
 			//System.out.println(text);
@@ -160,6 +154,14 @@ public class ProcessPushMessage
 			//text = Utility.IsRate_Proess(conn);
 	    	if (text.isEmpty() == false)
 	    	{
+	        	String user_id = props.getProperty("groupid").toString();
+				final BotApiResponse response = this.lineMessagingClient
+                        .pushMessage(new PushMessage(user_id.toString(),
+                                     new TextMessage(text.toString()
+                                      ))).get();
+				System.out.println(response.toString());
+
+				/* Delete By 2024.07.08 Start
 		    	// BOT_IDを取得
 				String bot_id = this.props.getProperty("id").toString();
 
@@ -217,10 +219,12 @@ public class ProcessPushMessage
 					ps.close();
 					ps = null;
 				}
+				Delete By 2024.07.08 End */
 	    	}
 		}
         finally
         {
+        	/* Delete By 2024.07.08 Start
         	if (conn != null)
         	{
         		conn.getConnection().close();
@@ -232,6 +236,7 @@ public class ProcessPushMessage
         		sbFindSQL.delete(0, sbFindSQL.length());
     			sbFindSQL= null;
         	}
+        	Delete By 2024.07.08 End */
         }
 	}
 
@@ -283,14 +288,39 @@ public class ProcessPushMessage
      */
     public void pushBurnablesAlarm() throws URISyntaxException, IOException, SQLException, InterruptedException, ExecutionException, InstantiationException, IllegalAccessException
     {
-    	DBConnection conn = null;
-    	PreparedStatement ps = null;
-    	ResultSet rs = null;
+    	//DBConnection conn = null;
+    	//PreparedStatement ps = null;
+    	//ResultSet rs = null;
     	String text = "";
-    	StringBuilder sbFindSQL = null;
+    	//StringBuilder sbFindSQL = null;
 
 		try
 		{
+			// プロパティ情報を取得　
+	    	Properties conf_props = new Properties();
+	    	try {
+				conf_props.load(new FileInputStream(Constants.CONF_PROP_PATH));
+			} catch (FileNotFoundException e1) {
+				// TODO 自動生成された catch ブロック
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO 自動生成された catch ブロック
+				e1.printStackTrace();
+			}
+	    	if (conf_props.getProperty("ratechk.allow").toString().equals("0") == true) // 配信を許可しない場合は処理中断
+	    	{
+	    		return;
+	    	}
+
+        	String user_id = props.getProperty("groupid").toString();
+
+			final BotApiResponse response = this.lineMessagingClient
+                    .pushMessage(new PushMessage(user_id.toString(),
+                                 new TextMessage(text.toString()
+                                  ))).get();
+			System.out.println(response.toString());
+
+			/*
 			conn = DBFactory.getConnection(this.props);
 
 			text = Utility.IsRate_Proess(conn);
@@ -341,9 +371,11 @@ public class ProcessPushMessage
 					ps = null;
 				}
 	    	}
+	    	*/
 		}
         finally
         {
+        	/*
         	if (conn != null)
         	{
         		conn.getConnection().close();
@@ -354,7 +386,7 @@ public class ProcessPushMessage
         	{
         		sbFindSQL.delete(0, sbFindSQL.length());
     			sbFindSQL= null;
-        	}
+        	}*/
         }
     }
 }

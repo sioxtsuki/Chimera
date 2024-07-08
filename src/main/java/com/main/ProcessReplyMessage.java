@@ -291,18 +291,23 @@ public class ProcessReplyMessage
 	@EventMapping
 	public void handleFollowEvent(FollowEvent event)
 	{
+
+/* Delete By 2024.07.08 Start
 		// ユーザIDを取得
 		String user_id = event.getSource().getUserId().toString();
 
-    	String res = "Signup failed.\nPlease apply again.";
     	DBConnection conn = null;
     	Resource resource = null;
     	Properties props = null;
 		PreparedStatement ps = null;
+*/
+    	String res = "Signup failed.\nPlease apply again.";
 
     	try
     	{
-        	resource = new ClassPathResource(Constants.PROP_PATH);
+
+/* Delete By 2024.07.08 Start
+         	resource = new ClassPathResource(Constants.PROP_PATH);
 			props = PropertiesLoaderUtils.loadProperties(resource);
 
     		// データベースへ追加
@@ -380,6 +385,12 @@ public class ProcessReplyMessage
 					ps.close();
 				}
 			}
+*/
+			// パスワード作成
+			String passwd = PasswordGenerator.GetPassword();
+			res = "Welcome.\nThanking you in advance.";
+			res += "\nyour password: ";
+			res += passwd.toString();
 
 			// リプライ実行
 			final BotApiResponse apiResponse = lineMessagingService
@@ -387,20 +398,20 @@ public class ProcessReplyMessage
 			    		Collections.singletonList(new TextMessage(res.toString()))))
 			    			.execute().body();
 
-
     	} catch (IOException e) {
 			// TODO 自動生成された catch ブロック
 			System.out.println(e.getCause());
-		} catch (InstantiationException e) {
+		//} catch (InstantiationException e) {
 			// TODO 自動生成された catch ブロック
-			System.out.println(e.getCause());
-		} catch (IllegalAccessException e) {
+			//System.out.println(e.getCause());
+		//} catch (IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
-			System.out.println(e.getCause());
-		} catch (SQLException e) {
+			//System.out.println(e.getCause());
+		//} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
-			System.out.println(e.getCause());
+			//System.out.println(e.getCause());
 		} finally{
+			/*
 			if (conn != null)
 			{
 				try {
@@ -423,8 +434,8 @@ public class ProcessReplyMessage
 			{
 				props = null;
 			}
+*/
 		}
-
     	//String replyToken = event.getReplyToken();
 		//BotApiResponse apiResponse = null;
 

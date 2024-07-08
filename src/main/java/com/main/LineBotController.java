@@ -3,7 +3,6 @@ package com.main;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -47,7 +46,7 @@ public class LineBotController {
 		//+------------------------------+
 		//| 停止の場合はアラートを受け付けない
 		//+------------------------------+
-		// DBを検索ok1234
+		// Delete By 2024.07.08
 		/*
 		int ret = Utility.GetRateCheckState();
 		if (ret == 0) // 配信を許可しない場合は処理中断
@@ -72,7 +71,6 @@ public class LineBotController {
     		return;
     	}
 
-
 		String strServer = request.getParameter("server");
 		String strText = request.getParameter("text");
 		String strMessage = request.getParameter("message");
@@ -95,10 +93,13 @@ public class LineBotController {
 		// メッセージが無い場合は終了
 		if (value.isEmpty() == true) return;
 
+		// Delete By 2024.07.08 Start
     	//DBConnection conn = null;
     	//PreparedStatement ps = null;
-    	ResultSet rs = null;
+    	//ResultSet rs = null;
     	//StringBuilder sbFindSQL = null;
+		// Delete By 2024.07.08 End
+
     	Resource resource = null;
     	Properties props = null;
 
@@ -107,7 +108,6 @@ public class LineBotController {
 			resource = new ClassPathResource(Constants.PROP_PATH);
         	props = PropertiesLoaderUtils.loadProperties(resource);
 
-
         	String user_id = props.getProperty("groupid").toString();
 			response = this.lineMessagingClient
 			        .pushMessage(new PushMessage(user_id.toString(),
@@ -115,7 +115,7 @@ public class LineBotController {
 			                      ))).get();
 
 
-			/*
+			/* Delete By 2024.07.08 Start
         	conn = DBFactory.getConnection(props);
 
 			if (value.isEmpty() == false)
@@ -151,7 +151,8 @@ public class LineBotController {
 						}
 					}
 				}
-			}*/
+			}
+			Delete By 2024.07.08 End */
 
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO 自動生成された catch ブロック
@@ -168,6 +169,9 @@ public class LineBotController {
 		//} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
 			//e.printStackTrace();
+		}
+		finally
+		{
 		}
 	}
 }
